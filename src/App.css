@@ -1,0 +1,28 @@
+.input {
+  background-image: linear-gradient(to bottom, blue, rgb(93, 252, 255));
+  align-items: center;
+}
+
+.input form {
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.input form input {
+  border: none;
+  width: 100%;
+}
+
+.input form button {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 0 0.5rem;
+  padding: 0 1rem;
+  font-weight: 500;
+  background-color: rgb(250, 222, 60);
+}
+
+.input form button:hover {
+  background: rgb(0, 251, 255);
+  border: 1px solid white;
+}
