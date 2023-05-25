@@ -1,110 +1,150 @@
-import { useState } from "react";
-import { AiOutlineEdit } from "react-icons/ai";
-import { AiOutlineDelete } from "react-icons/ai";
+import { useReducer } from "react";
 import "./App.css";
+import AddTodo from "./components/AddTodo";
+import TodoList from "./components/TodoList";
 
-function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [form, setForm] = useState({
-    todo: "",
-    status: false,
-  });
+export default function App() {
+  // const [todoList, setTodoList] = useState([]);
+  // const [form, setForm] = useState({
+  //   todo: "",
+  //   status: false,
+  // });
 
-  const resetInput = () => {
-    setForm({
-      todo: "",
-      status: false,
+  // const resetInput = () => {
+  //   setForm({
+  //     todo: "",
+  //     status: false,
+  //   });
+  // };
+
+  // const handleChange = (e) => {
+  //   setForm({
+  //     ...form,
+  //     todo: e.target.value,
+  //     status: false,
+  //   });
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (form.index || form.index === 0) {
+  //     const newTodo = todoList.map((e, i) => {
+  //       if (i === form.index) {
+  //         return form;
+  //       } else {
+  //         return e;
+  //       }
+  //     });
+  //     setTodoList(newTodo);
+  //   } else {
+  //     setTodoList([...todoList, form]);
+  //   }
+  //   resetInput();
+  // };
+
+  // const handleCheck = (index) => {
+  //   const newTodo = todoList.map((e, i) => {
+  //     if (i === index) {
+  //       return {
+  //         todo: e.todo,
+  //         status: true,
+  //       };
+  //     } else {
+  //       return e;
+  //     }
+  //   });
+  //   setTodoList(newTodo);
+  // };
+
+  // const handleDelete = (index) => {
+  //   const newTodo = todoList.filter((e, i) => {
+  //     if (i !== index) {
+  //       return e;
+  //     }
+  //   });
+  //   setTodoList(newTodo);
+  // };
+
+  // const handleEdit = (index) => {
+  //   const detailTodo = {
+  //     index,
+  //     ...todoList[index],
+  //   };
+  //   setForm(detailTodo);
+  // };
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+  function handleAddTask(text) {
+    dispatch({
+      type: "added",
+      id: nextId++,
+      text: text,
     });
-  };
+  }
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      todo: e.target.value,
-      status: false,
+  function handleChangeTask(task) {
+    dispatch({
+      type: "changed",
+      task: task,
     });
-  };
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (form.index || form.index === 0) {
-      const newTodo = todoList.map((e, i) => {
-        if (i === form.index) {
-          return form;
-        } else {
-          return e;
-        }
-      });
-      setTodoList(newTodo);
-    } else {
-      setTodoList([...todoList, form]);
-    }
-    resetInput();
-  };
-
-  const handleCheck = (index) => {
-    const newTodo = todoList.map((e, i) => {
-      if (i === index) {
-        return {
-          todo: e.todo,
-          status: true,
-        };
-      } else {
-        return e;
-      }
+  function handleDeleteTask(taskId) {
+    dispatch({
+      type: "deleted",
+      id: taskId,
     });
-    setTodoList(newTodo);
-  };
-
-  const handleDelete = (index) => {
-    const newTodo = todoList.filter((e, i) => {
-      if (i !== index) {
-        return e;
-      }
-    });
-    setTodoList(newTodo);
-  };
-
-  const handleEdit = (index) => {
-    const detailTodo = {
-      index,
-      ...todoList[index],
-    };
-    setForm(detailTodo);
-  };
+  }
 
   return (
     <>
       <div className="input col-12 d-flex flex-column justify-content-center p-5">
         <h1 className="text-warning">What's the plan for today?</h1>
-        <form className="col-8 col-sm-7 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center border bg-white p-3 mt-4" method="post" onSubmit={handleSubmit}>
-          <input type="text" name="todo" value={form.todo} onChange={handleChange} placeholder="What to do" className="px-2" />
-          <button type="submit" className="">
-            Add
-          </button>
-        </form>
+        <div className="form col-8 col-sm-7 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center border bg-white p-3 mt-4">
+          <AddTodo onAddTask={handleAddTask} />
+        </div>
       </div>
 
       <div className="content d-flex flex-column justify-content-center align-items-center p-3">
-        {todoList.map((e, i) => (
-          <div key={i} className="col-4 card d-flex flex-row p-2 m-2 align-items-center">
-            <div className="action px-2">
-              <input type="checkbox" name="" id="" />
-            </div>
-            <div className="text">{e.todo}</div>
-            <div className="btn-action d-flex justify-content-end">
-              <button className="btn-edit" onClick={() => handleEdit(i)}>
-                <AiOutlineEdit />
-              </button>
-              <button className="btn-delete" onClick={() => handleDelete(i)}>
-                <AiOutlineDelete />
-              </button>
-            </div>
-          </div>
-        ))}
+        <TodoList tasks={tasks} onChangeTask={handleChangeTask} onDeleteTask={handleDeleteTask} />
       </div>
     </>
   );
 }
 
-export default App;
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case "added": {
+      return [
+        ...tasks,
+        {
+          id: action.id,
+          text: action.text,
+          done: false,
+        },
+      ];
+    }
+    case "changed": {
+      return tasks.map((t) => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case "deleted": {
+      return tasks.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error("Unknown action: " + action.type);
+    }
+  }
+}
+
+let nextId = 3;
+const initialTasks = [
+  { id: 0, text: "Membersikan Kamar", done: true },
+  { id: 1, text: "Sarapan Pagi", done: false },
+  { id: 2, text: "Belajar Ngoding", done: false },
+];
