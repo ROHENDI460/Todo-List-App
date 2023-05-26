@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = [
-  // { id: 0, text: "Membersikan Kosan", isDone: true },
-  // { id: 1, text: "Memasak Lauk Makan", isDone: false },
-  // { id: 2, text: "Belajar Ngoding", isDone: false },
+  { id: 0, text: "Mencuci Baju", isDone: true },
+  { id: 1, text: "Memasak Lauk Makan", isDone: false },
+  { id: 2, text: "Belajar Ngoding", isDone: true },
+  { id: 3, text: "Tidur", isDone: false },
 ];
 
 export const addTodoReducer = createSlice({
@@ -48,25 +49,3 @@ export const addTodoReducer = createSlice({
 
 export const { addTodos, deleteTodos, editTodos, isDoneTodos } = addTodoReducer.actions;
 export const reducer = addTodoReducer.reducer;
-
-// import { useReducer } from "react";
-// import TodoList from "../../components/TodoList";
-
-// const initialState = [
-//   { id: 0, text: "Membersikan Kosan", done: true },
-//   { id: 1, text: "Memasak Lauk Makan", done: false },
-//   { id: 2, text: "Belajar Ngoding", done: false },
-// ];
-
-// export function todoReducer(state = initialState, action) {
-//   switch (action.type) {
-//     // case ADD_TODO:
-//     //   return {
-//     //     todos: [...state.todos, action.payload],
-//     //   };
-//     default:
-//       return state;
-//   }
-// }
-
-// let nextId = 3;

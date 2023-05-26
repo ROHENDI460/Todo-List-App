@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { addTodos, deleteTodos, editTodos, isDoneTodos } from "../redux/reducers/reducer";
 import { useState } from "react";
 import AddTodo from "./AddTodo";
-import App from "../App";
 
 const mapStateToProps = (state) => {
   return {
@@ -37,19 +36,17 @@ const FilterTodo = (props) => {
       </div>
 
       <div className="col-4 mt-3 d-flex flex-column  align-items-center">
-        {props.todo.length > 0 && sort === "active"
+        {props.todo.length > 0 && sort === "active" // Status Aktive
           ? props.todo.map((item) => {
               return item.isDone === false && <AddTodo key={item.id} item={item} deleteTodo={props.deleteTodo} editTodo={props.editTodo} isDoneTodo={props.isDoneTodo} />;
             })
           : null}
-        {/* for completed items */}
-        {props.todo.length > 0 && sort === "completed"
+        {props.todo.length > 0 && sort === "completed" // Status Complete
           ? props.todo.map((item) => {
               return item.isDone === true && <AddTodo key={item.id} item={item} deleteTodo={props.deleteTodo} editTodo={props.editTodo} isDoneTodo={props.isDoneTodo} />;
             })
           : null}
-        {/* for all items */}
-        {props.todo.length > 0 && sort === "all"
+        {props.todo.length > 0 && sort === "all" // Status All
           ? props.todo.map((item) => {
               return <AddTodo key={item.id} item={item} deleteTodo={props.deleteTodo} editTodo={props.editTodo} isDoneTodo={props.isDoneTodo} />;
             })
